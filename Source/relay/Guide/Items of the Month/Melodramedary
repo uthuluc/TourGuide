@@ -1,60 +1,51 @@
 RegisterTaskGenerationFunction("IOTMMelodramedaryGenerateTasks");
 void IOTMMelodramedaryGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEntry [int] optional_task_entries, ChecklistEntry [int] future_task_entries)
 {
-		int spitOMeter = (get_property_int("camelSpit"));
-		string [int] description;
-		string url = "familiar.php";
-		string title = "Melodramedary Camel Spit: Locked and Loaded!";
-			description.listAppend(HTMLGenerateSpanFont("Spit!", "blue"));
-		if (spitOMeter == 100) {
-            task_entries.listAppend(ChecklistEntryMake("__familiar Melodramedary", url, ChecklistSubentryMake(title, description), -11));
-        }		
+    if (my_familiar() != lookupFamiliar("Melodramedary")) return;
+
+    if (get_property_int("camelSpit") == 100)
+        task_entries.listAppend(ChecklistEntryMake("__familiar Melodramedary", "familiar.php", ChecklistSubentryMake("Melodramedary: Locked and Loaded!", "", HTMLGenerateSpanFont("Spit!", "blue")), -11));
 }
 
 RegisterResourceGenerationFunction("IOTMMelodramedaryResource");
 void IOTMMelodramedaryResource(ChecklistEntry [int] resource_entries)
 {
-	if (!lookupFamiliar("Melodramedary").familiar_is_usable()) return;
-	int spitOMeter = (get_property_int("camelSpit"));
-	string title;
-    string [int] description;
-	
-		if (spitOMeter < 100) {
-            title = "" + spitoMeter + "% Melodramedary Camel Spit Charge";
-        } else {
-			title = "Melodramedary Camel Spit: Locked and Loaded!";
-			description.listAppend(HTMLGenerateSpanFont("Spit!", "blue"));
-        }
-		
-      description.listAppend("Spit on monsters to double quest items and quadruple non-quest items.");
-  		string url = "familiar.php";
-  		//There are also certainly even more options of varying effectiveness.
-				
-        string [int] options;
-        if (__misc_state["in run"] && my_path_id() != PATH_COMMUNITY_SERVICE)
-        {
-        	if ($item[bowling ball].available_amount() < 5 && get_property_int("hiddenBowlingAlleyProgress") < 7)
-            {
-            	//FIXME count bowling balls correctly and maybe test the overall quest
-				options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " pygmy bowler, needs +150% item.");
-            }
-            if (get_property_int("twinPeakProgress") != 15 && $item[rusty hedge trimmers].available_amount() < 4)
-            {
-            	//FIXME test trimmers against amount needed
-				options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " hedge beast, needs +567% item.");
-            }
-			if (!__quest_state["Level 12"].state_boolean["Lighthouse Finished"] && $item[barrel of gunpowder].available_amount() < 5)
-            {
-                options.listAppend(HTMLGenerateSpanOfClass("2x", "r_bold") + " lobsterfrogman, probably a weak option.");
-            }
-			if ($location[The Battlefield (Frat Uniform)].turns_spent > 0)
-            {
-                options.listAppend(HTMLGenerateSpanOfClass("(Many)", "r_bold") + " Green Ops Soldier, needs Explodinal pills.");
-            }
+    if (!lookupFamiliar("Melodramedary").familiar_is_usable()) return;
 
-        if (options.count() > 0)
-        	description.listAppend("Possible targets:<hr>" + options.listJoinComponents("<hr>").HTMLGenerateIndentedText();
-		
-		resource_entries.listAppend(ChecklistEntryMake("__familiar Melodramedary", url, ChecklistSubentryMake(title, description), 1));      
-	
+    int spit_o_meter = get_property_int("camelSpit");
+    string title;
+    string [int] description;
+    
+    if (spit_o_meter < 100) {
+        title = spit_o_meter + "% Melodramedary Camel Spit Charge";
+    } else {
+        title = "Melodramedary: Locked and Loaded!";
+        description.listAppend(HTMLGenerateSpanFont("Spit!", "blue"));
+    }
+    
+    description.listAppend("Spit on monsters to double quest items and quadruple non-quest items.");
+    //There are also certainly even more options of varying effectiveness.
+    
+    string [int] options;
+    if (__misc_state["in run"] && my_path_id() != PATH_COMMUNITY_SERVICE) {
+        if ($item[bowling ball].available_amount() < 5 && get_property_int("hiddenBowlingAlleyProgress") < 7) {
+            //FIXME count bowling balls correctly and maybe test the overall quest
+            options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " pygmy bowler, needs +150% item.");
+        }
+        if (get_property_int("twinPeakProgress") != 15 && $item[rusty hedge trimmers].available_amount() < 4) {
+            //FIXME test trimmers against amount needed
+            options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " hedge beast, needs +567% item.");
+        }
+        if (!__quest_state["Level 12"].state_boolean["Lighthouse Finished"] && $item[barrel of gunpowder].available_amount() < 5) {
+            options.listAppend(HTMLGenerateSpanOfClass("2x", "r_bold") + " lobsterfrogman, probably a weak option.");
+        }
+        if ($location[The Battlefield (Frat Uniform)].turns_spent > 0) {
+            options.listAppend(HTMLGenerateSpanOfClass("(Many)", "r_bold") + " Green Ops Soldier, needs Explodinal pills.");
+        }
+    }
+
+    if (options.count() > 0)
+        description.listAppend("Possible targets:" + options.listJoinComponents("<hr>").HTMLGenerateIndentedText());
+    
+    resource_entries.listAppend(ChecklistEntryMake("__familiar Melodramedary", "familiar.php", ChecklistSubentryMake(title, description), 1));
 }
