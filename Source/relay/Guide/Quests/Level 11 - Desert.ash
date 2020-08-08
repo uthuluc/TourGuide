@@ -67,6 +67,13 @@ void QLevel11DesertGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEnt
     if (have_blacklight_bulb)
         exploration_per_turn += 2.0;
     //FIXME deal with ultra-hydrated
+
+    familiar camel = lookupFamiliar("Melodramedary");
+    boolean canCamel = camel.familiar_is_usable();
+    boolean haveCamel = my_familiar() == camel && camel != $familiar[none];
+    if (haveCamel)
+        exploration_per_turn += 1.0;
+
     int combats_remaining = exploration_remaining;
     combats_remaining = ceil(to_float(exploration_remaining) / exploration_per_turn);
     subentry.entries.listAppend(exploration_remaining + "% exploration remaining. (" + pluralise(combats_remaining, "combat", "combats") + ")");
@@ -207,7 +214,7 @@ void QLevel11DesertGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEnt
             if ($item[uv-resistant compass].available_amount() == 0 && !(my_path_id() == PATH_LICENSE_TO_ADVENTURE && get_property_boolean("bondDesert")) && my_path_id() != PATH_EXPLOSIONS)
             {
                 line = "Acquire";
-                if (have_blacklight_bulb)
+                if (have_blacklight_bulb || haveCamel)
                 {
                     line = "Possibly acquire";
                     should_output_compass_in_red = false;
@@ -229,6 +236,12 @@ void QLevel11DesertGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEnt
                 url = "inventory.php?ftext=uv-resistant+compass";
             }
         }
+        if (canCamel && !haveCamel) {
+            if (line == "")
+                line += "Bring along Melodramedary.";
+            else
+                line_extra += "|Or bring along Melodramedary.";
+        }
         if (line != "")
         {
             if (should_output_compass_in_red)
@@ -236,6 +249,7 @@ void QLevel11DesertGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEnt
             line += line_extra;
             subentry.entries.listAppend(line);
         }
-    }
+    } else
+        subentry.entries.listAppend("Could bring along Melodramedary.");
     task_entries.listAppend(ChecklistEntryMake(base_quest_state.image_name, url, subentry, $locations[the arid\, extra-dry desert,the oasis]));
 }
