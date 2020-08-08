@@ -47,6 +47,9 @@ void IOTMMelodramedaryResource(ChecklistEntry [int] resource_entries)
         if (__quest_state["Level 9"].state_boolean["bridge complete"] && __quest_state["Level 9"].state_int["twin peak progress"] != 15 && $item[rusty hedge trimmers].available_amount() < __quest_state["Level 9"].state_int["peak tests remaining"] - 1)
             options.listAppend("Hedge beast; needs +567% item.");
         
+        if (__quest_state["Level 11 Ron"].mafia_internal_step == 3 || __quest_state["Level 11 Ron"].mafia_internal_step == 4) //Can't really compare with progress/cable uses for that day, since they could encounter red herring/snapper / wait for the next day
+            options.listAppend("Red butler; needs +234% item.");
+        
         if (__quest_state["Level 12"].mafia_internal_step > 1 && !__quest_state["Level 12"].state_boolean["Lighthouse Finished"] && $item[barrel of gunpowder].available_amount() < 4)
             options.listAppend("Lobsterfrogman; prob. a weak option.");
         
