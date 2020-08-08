@@ -19,6 +19,13 @@ void IOTMMelodramedaryResource(ChecklistEntry [int] resource_entries)
     
     if (spit_o_meter < 100) {
         title = spit_o_meter + "% Melodramedary Spit Charge";
+
+        boolean camelCapped = lookupFamiliar("Melodramedary").familiar_equipped_equipment() == lookupItem("dromedary drinking helmet");
+        int fights_left = floor((101 - spit_o_meter) / 3.33);
+        if (camelCapped)
+            fights_left = ceil(fights_left / 1.3);
+
+        description.listAppend("Ready in " + (camelCapped ? "~" : "") + fights_left.pluralise("fight", "fights") + ".");
     } else {
         title = "Melodramedary: Locked and Loaded!";
         description.listAppend(HTMLGenerateSpanFont("Spit!", "blue"));
