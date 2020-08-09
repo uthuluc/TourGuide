@@ -12,10 +12,12 @@ void IOTMMelodramedaryResource(ChecklistEntry [int] resource_entries)
 {
     if (!lookupFamiliar("Melodramedary").familiar_is_usable()) return;
 
+    int spit_o_meter = get_property_int("camelSpit");
+    
+    if (!__misc_state["in run"] && spit_o_meter < 100 && my_familiar() != lookupFamiliar("Melodramedary")) return;
+    
     string title;
     string [int] description;
-    
-    int spit_o_meter = get_property_int("camelSpit");
     
     if (spit_o_meter < 100) {
         title = spit_o_meter + "% Melodramedary Spit Charge";
