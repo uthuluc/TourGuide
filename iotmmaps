@@ -1,0 +1,78 @@
+//experimental cartography code
+RegisterResourceGenerationFunction("IOTMCartographyMapsGenerateResource");
+void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
+{
+	if (!(__misc_state["in run"] && in_ronin())) return;
+    
+    int uses_left = clampi(3 - get_property_int("__monstersMapped"), 0, 3);
+    if (uses_left > 0 && my_path_id() != PATH_POCKET_FAMILIARS)
+	{
+		string [int] description;
+        description.listAppend("Pick the monster you want to fight!");
+		description.listAppend("This IotM also gives you a special noncom in the following zones:");
+		string [int] noncomMaps;
+			if (!__quest_state["cc_spookyravennecklace"].finished)
+				{
+					noncomMaps.listAppend("The Haunted Billiards Room");
+				}
+			if (!__quest_state["cc_friars"].finished)
+				{
+					noncomMaps.listAppend("The Dark Neck of the Woods");
+				}
+			if (get_property_int("cyrptNookEvilness") > 25)
+				{
+					noncomMaps.listAppend("The Defiled Nook");
+				}
+			if (get_property_int("twinPeakProgress") != 15)
+				{
+					noncomMaps.listAppend(HTMLGenerateSpanOfClass("First adv", "r_bold") + " A-Boo Peak: gives Twin Peak noncom");
+				}
+			if (!__quest_state["cc_castletop"].finished)
+					{
+						noncomMaps.listAppend("Castle Top Floor");
+					}
+			if (!__quest_state["warProgress"].started)
+					{
+						noncomMaps.listAppend("The Hippy Camp (Verge of War)");
+					}			
+		string [int] options;
+			if (!__quest_state["Level 11 Ron"].finished)
+			{
+				options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " Red Butler, needs +234% or +567% item. Combine with Use the Force.");
+            }
+			if (get_property_int("twinPeakProgress") < 15 && $item[rusty hedge trimmers].available_amount() < 4)
+            {
+				options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " hedge beast, needs +567% item and Spit.");
+            }
+			if (__quest_state["Level 9"].state_int["a-boo peak hauntedness"] > 0)
+			{
+			    options.listAppend(HTMLGenerateSpanOfClass("4x", "r_bold") + " Whatsian Commander Ghost, needs +567% item.");
+            }
+			if ($item[star chart].available_amount() < 1 || $item[richard's star key].available_amount() < 1)
+            {
+                options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " Astronomer");
+            }
+			if (!__quest_state["Level 12"].state_boolean["Lighthouse Finished"] && $item[barrel of gunpowder].available_amount() < 5)
+            {
+                options.listAppend(HTMLGenerateSpanOfClass("1x", "r_bold") + " lobsterfrogman, probably a weak option. Combine with Use the Force?");
+            }
+			if ($location[The Battlefield (Frat Uniform)].turns_spent < 100)
+            {
+                options.listAppend(HTMLGenerateSpanOfClass("(Some)", "r_bold") + " Green Ops Soldier, need to Use the Force and Spit then use Explodinal pills.");
+            }
+        resource_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "", ChecklistSubentryMake(pluralise(uses_left, "Cartography skill use", "Cartography skill uses"), "", description), 5).ChecklistEntrySetIDTag("Cartography skills resource"));
+    }
+}
+
+RegisterTaskGenerationFunction("IOTMCartographyMapsGenerateTasks");
+void IOTMCartographyMapsGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEntry [int] optional_task_entries, ChecklistEntry [int] future_task_entries)
+{
+		{
+		string [int] description;
+		string title = "Your mapping senses are activated!";
+			description.listAppend(HTMLGenerateSpanFont("Pick your monster!", "blue"));
+		if (!get_property_boolean("mappingMonsters") == false) {
+            task_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "url", ChecklistSubentryMake(title, description), -11));
+			}
+		}	
+}
