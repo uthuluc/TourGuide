@@ -66,3 +66,16 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
         }
         resource_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "", ChecklistSubentryMake(pluralise(maps_left, "Cartography skill use", "Cartography skill uses"), "", description), 5).ChecklistEntrySetIDTag("Cartography skills resource"));
 }
+
+RegisterTaskGenerationFunction("IOTMCartographyMapsGenerateTasks");
+void IOTMCartographyMapsGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEntry [int] optional_task_entries, ChecklistEntry [int] future_task_entries)
+{
+		{
+		string [int] description;
+		string title = "Your mapping senses are activated!";
+			description.listAppend(HTMLGenerateSpanFont("Pick your monster!", "blue"));
+		if (!get_property_boolean("mappingMonsters") == false) {
+            task_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "url", ChecklistSubentryMake(title, description), -11));
+			}
+		}	
+}
