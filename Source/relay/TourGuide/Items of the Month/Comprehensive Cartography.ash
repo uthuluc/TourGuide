@@ -5,8 +5,10 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
 		int maps_left = clampi(3 - get_property_int("_monstersMapped"), 0, 3);
     	string [int] description;
         description.listAppend("Map the monsters you want to fight!");
-		description.listAppend("This IotM also gives you a special noncom in the following zones:");
 		string [int] options;
+		if (__misc_state["in run"] && my_path_id() != PATH_COMMUNITY_SERVICE)
+		{
+			description.listAppend("This IotM also gives you a special noncom in the following zones:");
 			if (!__quest_state["cc_spookyravennecklace"].finished)
 				{
 					options.listAppend("The Haunted Billiards Room");
@@ -24,13 +26,13 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
 					options.listAppend(HTMLGenerateSpanOfClass("First adv", "r_bold") + " A-Boo Peak: gives Twin Peak noncom");
 				}
 			if (!__quest_state["cc_castletop"].finished)
-				{
-					options.listAppend("Castle Top Floor");
-				}
+					{
+						options.listAppend("Castle Top Floor");
+					}
 			if (!__quest_state["warProgress"].started)
-				{
-					options.listAppend("The Hippy Camp (Verge of War)");
-				}			
+					{
+						options.listAppend("The Hippy Camp (Verge of War)");
+					}			
 		string [int] monsterMaps;
 			if (!__quest_state["Level 11 Ron"].finished)
 			{
@@ -61,19 +63,6 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
             description.listAppend("Noncoms of interest:|*-" + options.listJoinComponents("|*-"));
 		if (monsterMaps.count() > 0)
             description.listAppend("Monsters to map:|*-" + monsterMaps.listJoinComponents("|*-"));
-        
+        }
         resource_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "", ChecklistSubentryMake(pluralise(maps_left, "Cartography skill use", "Cartography skill uses"), "", description), 5).ChecklistEntrySetIDTag("Cartography skills resource"));
-}
-
-RegisterTaskGenerationFunction("IOTMCartographyMapsGenerateTasks");
-void IOTMCartographyMapsGenerateTasks(ChecklistEntry [int] task_entries, ChecklistEntry [int] optional_task_entries, ChecklistEntry [int] future_task_entries)
-{
-		{
-		string [int] description;
-		string title = "Your mapping senses are activated!";
-			description.listAppend(HTMLGenerateSpanFont("Pick your monster!", "blue"));
-		if (!get_property_boolean("mappingMonsters") == false) {
-            task_entries.listAppend(ChecklistEntryMake("__item Comprehensive Cartographic Compendium", "url", ChecklistSubentryMake(title, description), -11));
-			}
-		}	
 }
