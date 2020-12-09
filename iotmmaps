@@ -28,13 +28,13 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
 					options.listAppend(HTMLGenerateSpanOfClass("First adv", "r_bold") + " A-Boo Peak: gives Twin Peak noncom");
 				}
 			if (!__quest_state["cc_castletop"].finished)
-					{
-						options.listAppend("Castle Top Floor");
-					}
+				{
+					options.listAppend("Castle Top Floor");
+				}
 			if (!__quest_state["warProgress"].started)
-					{
-						options.listAppend("The Hippy Camp (Verge of War)");
-					}			
+				{
+					options.listAppend("The Hippy Camp (Verge of War)");
+				}			
 		string [int] monsterMaps;
 			if (!__quest_state["Level 11 Ron"].finished)
 			{
