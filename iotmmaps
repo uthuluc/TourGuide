@@ -39,27 +39,27 @@ void IOTMCartographyMapsGenerateResource(ChecklistEntry [int] resource_entries)
 			if (!__quest_state["Level 11 Ron"].finished)
 			{
 				monsterMaps.listAppend("Red Butler, 30% free kill item and 15% fun drop item. Combine with Olfaction/Use the Force?");
-            }
+         		}
 			if (get_property_int("twinPeakProgress") < 15 && $item[rusty hedge trimmers].available_amount() < 4)
-            {
+            		{
 				monsterMaps.listAppend("hedge beast, 15% quest progress item. Possibly Spit.");
-            }
+         		}
 			if (__quest_state["Level 9"].state_int["a-boo peak hauntedness"] > 0)
 			{
 			    monsterMaps.listAppend("Whatsian Commander Ghost, 15% free runaway item. Possibly Spit.");
-            }
+           		}
 			if ($item[star chart].available_amount() < 1 || $item[richard's star key].available_amount() < 1)
-            {
-                monsterMaps.listAppend("Astronomer");
-            }
+            		{
+             		   monsterMaps.listAppend("Astronomer");
+         		}
 			if (!__quest_state["Level 12"].state_boolean["Lighthouse Finished"] && $item[barrel of gunpowder].available_amount() < 5)
-            {
-                monsterMaps.listAppend("Lobsterfrogman, probably a weak option. Combine with Use the Force?");
-            }
+         		{
+        		   monsterMaps.listAppend("Lobsterfrogman, probably a weak option. Combine with Use the Force?");
+           		}
 			if ($location[The Battlefield (Frat Uniform)].turns_spent < 100)
-            {
-                monsterMaps.listAppend("Green Ops Soldier. Combine with Olfaction/Use the Force and Spit and Explodinal pills.");
-            }
+            		{
+                	   monsterMaps.listAppend("Green Ops Soldier. Combine with Olfaction/Use the Force and Spit and Explodinal pills.");
+            		}
 		
 		if (options.count() > 0)
             description.listAppend("Noncoms of interest:|*-" + options.listJoinComponents("|*-"));
